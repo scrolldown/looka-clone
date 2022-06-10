@@ -17,6 +17,7 @@ const Header = styled.div`
   padding : 0 10px;
 `
 
+
 const Main = styled.div`
   height : 1000px;
   padding : 50px 0;
