@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components'
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-
 import Home from "./page/Home"
 import SelectImageTool from "./page/SelectImageTool"
 import SelectColorTool from "./page/SelectColorTool"
