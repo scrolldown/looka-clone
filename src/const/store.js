@@ -22,10 +22,35 @@ let company = createSlice({
     }
 })
 
+let imageSelectedOnlyArr = createSlice({
+    name : 'imageSelectedOnlyArr',
+    initialState: [],
+    reducers : {
+        setImageSelectedOnlyArr(state, action){
+            return action.payload
+        }
+    }
+})
+
+let keywordSelectedOnlyArr = createSlice({
+    name : "keywordSelectedOnlyArr",
+    initialState: [],
+    reducers :{
+        setKeywordSelectedOnlyArr(state, action){
+            return action.payload
+        }
+    }
+})
+
 export let {changeName, changeSlogan} = company.actions
+export let {setImageSelectedOnlyArr} = imageSelectedOnlyArr.actions
+export let {setKeywordSelectedOnlyArr} = keywordSelectedOnlyArr.actions
 
 export default configureStore({
     reducer: {
-        company: company.reducer
+        company: company.reducer,
+        imageSelectedOnlyArr : imageSelectedOnlyArr.reducer,
+        keywordSelectedOnlyArr : keywordSelectedOnlyArr.reducer
     }
 }) 
+

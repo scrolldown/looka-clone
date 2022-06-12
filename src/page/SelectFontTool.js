@@ -22,30 +22,29 @@ const ImagePanel = styled.div`
         padding : 5px;
         font-family: ${(props)=>props.fontFamily}, sans-serif;
     }
-    
 `
 
 function SelectFontTool() {
     const length = 10;
-    const [colorArr, setColorArr] = useState(['Montserrat','Oswald','Roboto Mono']);
-    const [selectedColorArr, setSelectedColorArr] = useState(new Array(length).fill(false));
+    const [fontArr, setFontArr] = useState(['Montserrat','Oswald','Roboto Mono']);
+    const [selectedFontArr, setSelectedFontArr] = useState(new Array(length).fill(false));
     const [isClicked, setIsClicked] = useState(false);
 
     return (
         <Container>
             <Row>
-                {colorArr.map((temp, index) => {
+                {fontArr.map((temp, index) => {
                     return (
                         <Col key={index}>
-                            <ImagePanel isSelected={selectedColorArr[index]} fontFamily={colorArr[index]}>
+                            <ImagePanel isSelected={selectedFontArr[index]} fontFamily={fontArr[index]}>
                                 <div className="click-panel" onClick={() => {
-                                    selectedColorArr[index] = !selectedColorArr[index]
-                                    setSelectedColorArr(selectedColorArr)
+                                    selectedFontArr[index] = !selectedFontArr[index]
+                                    setSelectedFontArr(selectedFontArr)
                                     setIsClicked(!isClicked)
                                 }}
                                 >
-                                    {colorArr[index]}<br/><br/>
-                                    The quick brown fox jumps over the lazy dog 
+                                    {fontArr[index]}<br/><br/>
+                                    
                                 </div>
                             </ImagePanel>
 

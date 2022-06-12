@@ -16,7 +16,6 @@ const Header = styled.div`
   padding : 0 10px;
 `
 
-
 const Main = styled.div`
   height : 1000px;
   padding : 50px 0;
@@ -30,16 +29,18 @@ const Main = styled.div`
 function App() {
   return (
     <Router>
-      <Header><img src="https://cdn.looka.com/images/logos/looka_logo_black.svg" width="140px" /></Header>
+      <Header>
+        <a href="/"><img src="https://cdn.looka.com/images/logos/looka_logo_black.svg" width="140px" /></a>
+      </Header>
 
       <Main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/select-image" element={<SelectImageTool/>}/>
-          <Route path="/select-keyword" element={<SelectKeywordTool/>}/>    
-          <Route path="/select-color" element={<SelectColorTool/>}/>
-          <Route path="/select-font" element={<SelectFontTool/>}/>                    
-          <Route path="/result" element={<Result/>}/>                
+          <Route path="/select-image" element={<SelectImageTool />} />
+          <Route path="/select-keyword" element={<SelectKeywordTool />} />
+          <Route path="/select-color" element={<SelectColorTool />} />
+          <Route path="/select-font" element={<SelectFontTool />} />
+          <Route path="/result" element={<Result />} />
         </Routes>
       </Main>
 

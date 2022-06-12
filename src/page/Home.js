@@ -28,7 +28,7 @@ const Content = styled.div`
 
 function Home() {
     const dispatch = useDispatch()
-    const state = useSelector((state) => state.company)
+    const state = useSelector((state) => state)
 
     const [companyName, setCompanyName] = useState('')
     const [companySlogan, setCompanySlogan] = useState('')
@@ -55,7 +55,7 @@ function Home() {
             </p>
             <p>
                 <Link to="/select-image">
-                    <Button onClick={()=>console.log(state.name, state.slogan)}className='btn btn-default'>Get Started</Button>
+                    <Button onClick={()=>console.log(state.company.name, state.company.slogan)}className='btn btn-default'>Get Started</Button>
                 </Link>
 
             </p>
