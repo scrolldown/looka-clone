@@ -49,8 +49,6 @@ function SelectImageTool() {
         dispatch(setKeywordSelectedOnlyArr(tempKeywordArray))
     }
 
-    
-
     return (
         <Container>
             <Link to="/select-keyword">
@@ -59,7 +57,6 @@ function SelectImageTool() {
 
             <Row>
                 {(Object.keys(imageInfo)).map((i) => {
-                    console.log(i)
                     return (
                         <Col key={i}>
                             <ImagePanel isSelected={imageInfo[i].isSelected}>
