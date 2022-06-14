@@ -22,8 +22,8 @@ const ImagePanel = styled.div`
         filter: ${(props) => (props.isSelected ? "brightness(10%)" : "brightness(100%)")};
         margin-bottom : ${(props) => (props.isSelected ? "-5px" : "0px")}; 
     }
-
 `
+
 function SelectImageTool() {
     const dispatch = useDispatch()
     const state = useSelector((state) => state)
@@ -62,8 +62,8 @@ function SelectImageTool() {
             <Link to="/select-keyword">
                 <Button onClick={() => setStoreBySelectedImage(randomizedImageInfo)}>Continue</Button>
             </Link>
-            <Box sx={{ width: '100%', height: parseInt(window.innerHeight-300), overflowY: 'scroll' }}>
-                <ImageList variant="masonry" cols={parseInt(window.innerWidth/700)*4} gap={5}>
+            <Box sx={{ width: '100%', height: (parseInt(window.innerHeight-300)||700), overflowY: 'scroll' }}>
+                <ImageList variant="masonry" cols={parseInt(window.innerWidth/700)*4||4} gap={5}>
                     {(Object.keys(randomizedImageInfo)).map((i) => {
                         return (
                             <ImagePanel isSelected={randomizedImageInfo[i].isSelected}>
