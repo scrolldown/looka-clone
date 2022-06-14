@@ -2,27 +2,25 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux"
 import { setImageSelectedOnlyArr, setKeywordSelectedOnlyArr } from "./../const/store.js"
+import { ImageList, ImageListItem, ImageListItemBar, Box, IconButton } from '@mui/material';
 
 import styled from 'styled-components'
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Button } from 'react-bootstrap'
 
 import { imageInfo } from '../const/Provider'
 
 const ImagePanel = styled.div`
-    width : 200px;
-    height : 200px;
-    
-    text-align: center;
-    border : 3px black solid;
+    border : ${(props) => (props.isSelected ? "5px" : "0px")} blue solid; 
 
-    background-color: ${(props) => (props.isSelected ? "blue" : "white")};
-    /* &:hover{
+    margin-bottom : ${(props) => (props.isSelected ? "5px" : "0px")}; 
+
+    &:hover{
         cursor:pointer;
-    } */
+    }
 
     & .click-panel{
-        width : 100%;
-        height : 100%;
+        filter: ${(props) => (props.isSelected ? "brightness(10%)" : "brightness(100%)")};
+        margin-bottom : ${(props) => (props.isSelected ? "-5px" : "0px")}; 
     }
 
 `
@@ -31,6 +29,16 @@ function SelectImageTool() {
     const state = useSelector((state) => state)
 
     const [isClicked, setIsClicked] = useState(false);
+    const [randomizedImageInfo, setRandomizedImageInfo] = useState(
+        Object.keys(imageInfo)
+            .map((key) => ({ key, value: imageInfo[key] }))
+            .sort((a, b) => { return Math.random() - 0.5; })
+            .reduce((acc, e) => {
+                acc[e.key] = e.value;
+                return acc;
+            }, {})
+    );
+
 
     function setStoreBySelectedImage(arr) {
         let tempImageArray = new Array(0)
@@ -40,7 +48,7 @@ function SelectImageTool() {
             if (arr[i].isSelected === true) {
                 tempImageArray.push(i)
 
-                imageInfo[i].tag.map((keyword) => {
+                randomizedImageInfo[i].tag.map((keyword) => {
                     tempKeywordArray.push(keyword)
                 })
             }
@@ -52,30 +60,35 @@ function SelectImageTool() {
     return (
         <Container>
             <Link to="/select-keyword">
-                <Button onClick={() => setStoreBySelectedImage(imageInfo)}>Continue</Button>
+                <Button onClick={() => setStoreBySelectedImage(randomizedImageInfo)}>Continue</Button>
             </Link>
-
-            <Row>
-                {(Object.keys(imageInfo)).map((i) => {
-                    return (
-                        <Col key={i}>
-                            <ImagePanel isSelected={imageInfo[i].isSelected}>
-                                <div className="click-panel" onClick={() => {
-                                    imageInfo[i].isSelected = !imageInfo[i].isSelected
+            <Box sx={{ width: 700, height: 800, overflowY: 'scroll' }}>
+                <ImageList variant="masonry" cols={4} gap={5}>
+                    {(Object.keys(randomizedImageInfo)).map((i) => {
+                        return (
+                            <ImagePanel isSelected={randomizedImageInfo[i].isSelected}>
+                                <div key={i} className="click-panel" onClick={() => {
+                                    randomizedImageInfo[i].isSelected = !randomizedImageInfo[i].isSelected
                                     setIsClicked(!isClicked)
+                                    console.log(randomizedImageInfo[i].isSelected)
                                 }}>
-                                    {i}<br />
-                                    {imageInfo[i].tag}
-                                    <img width="100%" src={imageInfo[i].path} />
+                                    <ImageListItem
+                                        cols={1} rows={1}
+                                    >
+                                        <img
+                                            src={`${randomizedImageInfo[i].path}?w=248&fit=crop&auto=format`}
+                                            alt={i}
+                                            loading="lazy"
+                                        />
+                                        <ImageListItemBar title={randomizedImageInfo[i].tag} />
+                                    </ImageListItem>
                                 </div>
                             </ImagePanel>
-
-
-                        </Col>
-                    )
-                })}
-            </Row>
-
+                        )
+                    }
+                    )}
+                </ImageList>
+            </Box>
         </Container>
     )
 }
