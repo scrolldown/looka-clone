@@ -62,8 +62,8 @@ function SelectImageTool() {
             <Link to="/select-keyword">
                 <Button onClick={() => setStoreBySelectedImage(randomizedImageInfo)}>Continue</Button>
             </Link>
-            <Box sx={{ width: 700, height: 800, overflowY: 'scroll' }}>
-                <ImageList variant="masonry" cols={4} gap={5}>
+            <Box sx={{ width: '100%', height: parseInt(window.innerHeight-300), overflowY: 'scroll' }}>
+                <ImageList variant="masonry" cols={parseInt(window.innerWidth/700)*4} gap={5}>
                     {(Object.keys(randomizedImageInfo)).map((i) => {
                         return (
                             <ImagePanel isSelected={randomizedImageInfo[i].isSelected}>
