@@ -9,6 +9,8 @@ import SelectKeywordTool from "./page/SelectKeywordTool"
 import SelectFontTool from "./page/SelectFontTool"
 import Result from "./page/Result"
 
+import Logo from "./logo.png"
+
 const Header = styled.div`
   height : 60px;
   font-family:'Lexend';
@@ -30,7 +32,7 @@ function App() {
   return (
     <Router>
       <Header>
-        <a href="/"><img src="https://cdn.looka.com/images/logos/looka_logo_black.svg" width="140px" /></a>
+        <a href="/"><img src={Logo} width="140px" /></a>
       </Header>
 
       <Main>
