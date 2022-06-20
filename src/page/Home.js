@@ -55,7 +55,7 @@ function Home() {
             </p>
             <p>
                 <Link to="/select-image">
-                    <Button onClick={()=>console.log(state.company.name, state.company.slogan)}className='btn btn-default'>Get Started</Button>
+                    <Button className='btn btn-default'>Get Started</Button>
                 </Link>
 
             </p>

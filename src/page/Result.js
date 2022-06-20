@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 
-import { imageInfo, keywordInfo, fontInfo } from '../const/Provider'
+import { imageInfo, keywordInfo, fontInfo, colorInfo } from '../const/Provider'
 import { changeName, changeSlogan } from "./../const/store.js"
 
 const formStyle = {
@@ -15,12 +15,19 @@ const formStyle = {
     textAlign: 'center',
 };
 
-const ResultSection = styled.div`
+const FontResult = styled.div`
     margin : 10px 0;
     text-align: center;
     font-size: 30px;
     font-family: ${(props) => props.fontFamily}, sans-serif;
 `
+
+const ColorResult = styled.div`
+    margin : 10px 0;
+
+    background: ${(props) => props.colorCode};
+`
+
 
 function Result() {
     const dispatch = useDispatch()
@@ -29,6 +36,7 @@ function Result() {
     const [result, setResult] = useState(getKeywordScore());
     const [imageScoreRankArray, setImageScoreRankArray] = useState(getImageRank());
     const [fontScoreRankArray, setFontScoreRankArray] = useState(getFontRank());
+    const [colorScoreRankArray, setColorScoreRankArray] = useState(getColorRank());
     const [companyName, setCompanyName] = useState(state.company.name);
 
     function getKeywordScore() {
@@ -79,6 +87,28 @@ function Result() {
         return resultArray;
     }
 
+    function getColorRank() {
+        let resultArray = [];
+
+        Object.keys(colorInfo).map((color, index) => {
+            let temp = { "name": color, "score": 0 }
+
+            Object.keys(result).map((keyword) => {
+                colorInfo[color].tag.map((tag) => {
+
+                    if (keyword === tag) {
+                        temp.score = temp.score + result[keyword]
+                    }
+                })
+            })
+            resultArray.push(temp)
+        })
+        resultArray.sort((a, b) => { return b.score - a.score })
+        resultArray.length = 3
+        return resultArray;
+    }
+
+
     const onNameChange = (event) => {
         setCompanyName(event.target.value)
         dispatch(changeName(event.target.value))
@@ -98,11 +128,30 @@ function Result() {
                 {fontScoreRankArray.map((font) => {
                     return (
                         <Col key={font.name}>
-                            <ResultSection fontFamily={font.name}>
+                            <FontResult fontFamily={font.name}>
                                 {companyName}
-                            </ResultSection>
-                            score : {font.score}<br/>
+                            </FontResult>
+                            score : {font.score}<br />
                             {fontInfo[font.name]}
+                        </Col>
+                    )
+                })}
+            </Row>
+
+            <Row>Color</Row>
+            <Row>
+
+                {colorScoreRankArray.map((color) => {
+                    return (
+                        <Col key={color.name}>
+                            name : {color.name}<br/>
+                            score : {color.score}<br />
+                            {colorInfo[color.name].hex.map((hexCode) => {
+                                return (<ColorResult colorCode={hexCode}>                                    
+                                    {hexCode}
+                                </ColorResult>
+                                )
+                            })}
                         </Col>
                     )
                 })}
@@ -114,7 +163,7 @@ function Result() {
                     return (
                         <Col key={index}>
                             <img width="100%" src={imageInfo[image.name].path} />
-                            score : {image.score}<br/>
+                            score : {image.score}<br />
                             {imageInfo[image.name].tag}
                         </Col>
                     )

@@ -24,6 +24,9 @@ const ImagePanel = styled.div`
     }
 `
 
+
+
+
 function SelectImageTool() {
     const dispatch = useDispatch()
     const state = useSelector((state) => state)
@@ -38,7 +41,6 @@ function SelectImageTool() {
                 return acc;
             }, {})
     );
-
 
     function setStoreBySelectedImage(arr) {
         let tempImageArray = new Array(0)
@@ -60,9 +62,10 @@ function SelectImageTool() {
     return (
         <Container>
             <Link to="/select-keyword">
-                <Button onClick={() => setStoreBySelectedImage(randomizedImageInfo)}>Continue</Button>
+                <Button className="btn btn-warning" onClick={() => setStoreBySelectedImage(randomizedImageInfo)}>Continue</Button>
             </Link>
-            <Box sx={{ width: '100%', height: (parseInt(window.innerHeight-300)||700), overflowY: 'scroll' }}>
+            
+            <Box sx={{width: '100%', height: (parseInt(window.innerHeight-300)||700), overflowY: 'scroll', margin:"10px 0" }}>
                 <ImageList variant="masonry" cols={parseInt(window.innerWidth/700)*4||4} gap={5}>
                     {(Object.keys(randomizedImageInfo)).map((i) => {
                         return (
@@ -80,7 +83,8 @@ function SelectImageTool() {
                                             alt={i}
                                             loading="lazy"
                                         />
-                                        <ImageListItemBar title={randomizedImageInfo[i].tag} />
+                                        {/* image tag */}
+                                        {/* <ImageListItemBar title={randomizedImageInfo[i].tag} /> */}
                                     </ImageListItem>
                                 </div>
                             </ImagePanel>
