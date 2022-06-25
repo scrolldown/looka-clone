@@ -1,7 +1,7 @@
 import { Container, h1, Row, Col, Button } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 
@@ -19,7 +19,8 @@ const FontResult = styled.div`
     margin : 10px 0;
     text-align: center;
     font-size: 30px;
-    font-family: ${(props) => props.fontFamily}, sans-serif;
+    font-family: ${(props) => props.fontRankerInfo.name};
+    font-weight: ${(props) => props.fontRankerInfo.weight};
 `
 
 const ColorResult = styled.div`
@@ -32,7 +33,7 @@ const ColorResult = styled.div`
 function Result() {
     const dispatch = useDispatch()
     const state = useSelector((state) => state)
-
+    
     const [result, setResult] = useState(getKeywordScore());
     const [imageScoreRankArray, setImageScoreRankArray] = useState(getImageRank());
     const [fontScoreRankArray, setFontScoreRankArray] = useState(getFontRank());
@@ -70,10 +71,10 @@ function Result() {
         let resultArray = [];
 
         Object.keys(fontInfo).map((font, index) => {
-            let temp = { "name": font, "score": 0 }
+            let temp = { "id": font, "score": 0 }
 
             Object.keys(result).map((keyword) => {
-                fontInfo[font].map((tag) => {
+                fontInfo[font].tag.map((tag) => {
 
                     if (keyword === tag) {
                         temp.score = temp.score + result[keyword]
@@ -91,7 +92,7 @@ function Result() {
         let resultArray = [];
 
         Object.keys(colorInfo).map((color, index) => {
-            let temp = { "name": color, "score": 0 }
+            let temp = { "id": color, "score": 0 }
 
             Object.keys(result).map((keyword) => {
                 colorInfo[color].tag.map((tag) => {
@@ -115,6 +116,7 @@ function Result() {
     }
 
     return (
+
         <Container>
 
             <p className="h1 text-center border-bottom border-dark">
@@ -125,15 +127,16 @@ function Result() {
 
             <Row>Font</Row>
             <Row>
-                {fontScoreRankArray.map((font) => {
+                {fontScoreRankArray.map((fontRanker) => {
                     return (
-                        <Col key={font.name}>
-                            <FontResult fontFamily={font.name}>
-                                {companyName}
-                            </FontResult>
-                            score : {font.score}<br />
-                            {fontInfo[font.name]}
-                        </Col>
+                            <Col key={fontRanker.id}>
+                                <FontResult fontRankerInfo={fontInfo[fontRanker.id]}>
+                                    {companyName}
+                                </FontResult>
+                                {fontInfo[fontRanker.id].name}<br />
+                                score : {fontRanker.score}<br />
+                                {fontInfo[fontRanker.id].tag}
+                            </Col>
                     )
                 })}
             </Row>
@@ -141,13 +144,13 @@ function Result() {
             <Row>Color</Row>
             <Row>
 
-                {colorScoreRankArray.map((color) => {
+                {colorScoreRankArray.map((colorRanker) => {
                     return (
-                        <Col key={color.name}>
-                            name : {color.name}<br/>
-                            score : {color.score}<br />
-                            {colorInfo[color.name].hex.map((hexCode) => {
-                                return (<ColorResult colorCode={hexCode}>                                    
+                        <Col key={colorRanker.id}>
+                            name : {colorRanker.id}<br />
+                            score : {colorRanker.score}<br />
+                            {colorInfo[colorRanker.id].hex.map((hexCode) => {
+                                return (<ColorResult colorCode={hexCode}>
                                     {hexCode}
                                 </ColorResult>
                                 )
@@ -159,12 +162,12 @@ function Result() {
 
             <Row>Image</Row>
             <Row>
-                {imageScoreRankArray.map((image, index) => {
+                {imageScoreRankArray.map((imageRanker, index) => {
                     return (
                         <Col key={index}>
-                            <img width="100%" src={imageInfo[image.name].path} />
-                            score : {image.score}<br />
-                            {imageInfo[image.name].tag}
+                            <img width="100%" src={imageInfo[imageRanker.name].path} />
+                            score : {imageRanker.score}<br />
+                            {imageInfo[imageRanker.name].tag}
                         </Col>
                     )
                 })}
@@ -179,7 +182,8 @@ function Result() {
 
 
 
-        </Container>
+        </Container >
+
     )
 }
 
