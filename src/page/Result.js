@@ -5,7 +5,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 
-import { imageInfo, keywordInfo, fontInfo, colorInfo } from '../const/Provider'
+import { imageInfo, keywordInfo, engFontInfo, korFontInfo, colorInfo } from '../const/Provider'
 import { changeName, changeSlogan } from "./../const/store.js"
 
 const formStyle = {
@@ -22,10 +22,15 @@ const FontResult = styled.div`
     font-family: ${(props) => props.fontRankerInfo.name};
     font-weight: ${(props) => props.fontRankerInfo.weight};
 `
-
+const KorFontResult = styled.div`
+    font-family :    'Black Han Sans';
+    font-size : 30px;
+//    'SF_IceMango'
+//    'PyeongChangPeace-Light';
+//    'S-CoreDream-3Light';
+`
 const ColorResult = styled.div`
     margin : 10px 0;
-
     background: ${(props) => props.colorCode};
 `
 
@@ -35,9 +40,15 @@ function Result() {
     const state = useSelector((state) => state)
     
     const [result, setResult] = useState(getKeywordScore());
+
+    const koreanPattern =  /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    const [isKorean, setIsKorean] = useState(koreanPattern.test(state.company.name));
+
     const [imageScoreRankArray, setImageScoreRankArray] = useState(getImageRank());
-    const [fontScoreRankArray, setFontScoreRankArray] = useState(getFontRank());
+    const [engFontScoreRankArray, setEngFontScoreRankArray] = useState(getEngFontRank());
+    const [korFontScoreRankArray, setKorFontScoreRankArray] = useState(getKorFontRank());
     const [colorScoreRankArray, setColorScoreRankArray] = useState(getColorRank());
+
     const [companyName, setCompanyName] = useState(state.company.name);
 
     function getKeywordScore() {
@@ -67,14 +78,35 @@ function Result() {
         return resultArray;
     }
 
-    function getFontRank() {
+    function getEngFontRank() {
         let resultArray = [];
 
-        Object.keys(fontInfo).map((font, index) => {
+        Object.keys(engFontInfo).map((font, index) => {
             let temp = { "id": font, "score": 0 }
 
             Object.keys(result).map((keyword) => {
-                fontInfo[font].tag.map((tag) => {
+                engFontInfo[font].tag.map((tag) => {
+
+                    if (keyword === tag) {
+                        temp.score = temp.score + result[keyword]
+                    }
+                })
+            })
+            resultArray.push(temp)
+        })
+        resultArray.sort((a, b) => { return b.score - a.score })
+        resultArray.length = 3
+        return resultArray;
+    }
+
+    function getKorFontRank() {
+        let resultArray = [];
+
+        Object.keys(korFontInfo).map((font, index) => {
+            let temp = { "id": font, "score": 0 }
+
+            Object.keys(result).map((keyword) => {
+                korFontInfo[font].tag.map((tag) => {
 
                     if (keyword === tag) {
                         temp.score = temp.score + result[keyword]
@@ -112,6 +144,7 @@ function Result() {
 
     const onNameChange = (event) => {
         setCompanyName(event.target.value)
+        setIsKorean(koreanPattern.test(companyName))
         dispatch(changeName(event.target.value))
     }
 
@@ -124,23 +157,34 @@ function Result() {
             </p>
             <p className="h1 text-center">{state.company.slogan}</p>
 
-
             <Row>Font</Row>
+            {isKorean ?
+             <Row>
+                {korFontScoreRankArray.map((fontRanker) => 
+                        <Col key={fontRanker.id}>
+                            <FontResult fontRankerInfo={korFontInfo[fontRanker.id]}>
+                                {companyName}
+                            </FontResult>
+                            {korFontInfo[fontRanker.id].name}<br />
+                            score : {fontRanker.score}<br />
+                            {korFontInfo[fontRanker.id].tag}
+                        </Col>
+                )}
+            </Row>           
+            :
             <Row>
-                {fontScoreRankArray.map((fontRanker) => {
-                    return (
-                            <Col key={fontRanker.id}>
-                                <FontResult fontRankerInfo={fontInfo[fontRanker.id]}>
-                                    {companyName}
-                                </FontResult>
-                                {fontInfo[fontRanker.id].name}<br />
-                                score : {fontRanker.score}<br />
-                                {fontInfo[fontRanker.id].tag}
-                            </Col>
-                    )
-                })}
+                {engFontScoreRankArray.map((fontRanker) => 
+                        <Col key={fontRanker.id}>
+                            <FontResult fontRankerInfo={engFontInfo[fontRanker.id]}>
+                                {companyName}
+                            </FontResult>
+                            {engFontInfo[fontRanker.id].name}<br />
+                            score : {fontRanker.score}<br />
+                            {engFontInfo[fontRanker.id].tag}
+                        </Col>
+                )}
             </Row>
-
+            }
             <Row>Color</Row>
             <Row>
 

@@ -22,6 +22,7 @@ let company = createSlice({
     }
 })
 
+
 let imageSelectedOnlyArr = createSlice({
     name : 'imageSelectedOnlyArr',
     initialState: [],

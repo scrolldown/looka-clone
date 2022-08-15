@@ -73,7 +73,6 @@ function SelectImageTool() {
                                 <div key={i} className="click-panel" onClick={() => {
                                     randomizedImageInfo[i].isSelected = !randomizedImageInfo[i].isSelected
                                     setIsClicked(!isClicked)
-                                    console.log(randomizedImageInfo[i].isSelected)
                                 }}>
                                     <ImageListItem
                                         cols={1} rows={1}

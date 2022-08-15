@@ -168,7 +168,7 @@ function importAllKeyword() {
     return keywords;
 }
 
-export const fontInfo = {
+export const engFontInfo = {
 1:{'name':'Josefin Sans','weight':300,'tag':
 []
 },
@@ -221,6 +221,12 @@ export const fontInfo = {
 42:{'name':'Oleo Script','weight':400,'tag':['개구진','굳센','성숙한','다부진','빈티지한','부드러운','짙은','복잡한','명랑한','발랄한','시원한','이국적인','자유분방한','캐쥬얼한','풍요로운']},
 };
 
+export const korFontInfo = {
+    1:{'name':'SF_IceMango','weight':'normal','tag':['개구진','귀여운','다정한','달콤한','명랑한','밝은','발랄한','산뜻한','상큼한','천진난만한','유쾌한','쾌활한','환한']},
+    2:{'name':'PyeongChangPeace-Light','weight':300,'tag':['자연주의','잔잔한','귀여운','따뜻한','다정한','밝은','상큼한','사랑스러운','순수한','캐쥬얼한','평화로운','빈티지한','풍요로운','화려한']},
+    3:{'name':'S-CoreDream-3Light','weight':'normal','tag':['모던한','심플한','신뢰감있는','굳센','깔끔한','건강한','구조적인','다부진','스포티한','빈티지한','무게감있는','캐쥬얼한','딱딱한','우디한','중성의']},
+    4:{'name':'Black Han Sans','weight':400,'tag':['건강한','다부진','강렬한','굳센','딱딱한','러프한','무게감있는','스포티한','시크한','우디한','중후한','짙은','캐쥬얼한','퇴폐적인']},
+}
 
 export const colorInfo = {
     1: {
