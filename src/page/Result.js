@@ -180,6 +180,8 @@ function Result() {
                 })}
             </Row>
 
+            <Button className='btn btn-default' onClick={()=>window.print()}>dd</Button> 
+
 
 
         </Container >
