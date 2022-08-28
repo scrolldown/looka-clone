@@ -22,13 +22,7 @@ const FontResult = styled.div`
     font-family: ${(props) => props.fontRankerInfo.name};
     font-weight: ${(props) => props.fontRankerInfo.weight};
 `
-const KorFontResult = styled.div`
-    font-family :    'Black Han Sans';
-    font-size : 30px;
-//    'SF_IceMango'
-//    'PyeongChangPeace-Light';
-//    'S-CoreDream-3Light';
-`
+
 const ColorResult = styled.div`
     margin : 10px 0;
     background: ${(props) => props.colorCode};
