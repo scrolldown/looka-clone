@@ -151,7 +151,7 @@ function Result() {
             </p>
             <p className="h1 text-center">{state.company.slogan}</p>
 
-            <Row>Font</Row>
+            <Row className='h3'>Font</Row>
             {isKorean ?
              <Row>
                 {korFontScoreRankArray.map((fontRanker) => 
@@ -159,9 +159,7 @@ function Result() {
                             <FontResult fontRankerInfo={korFontInfo[fontRanker.id]}>
                                 {companyName}
                             </FontResult>
-                            {korFontInfo[fontRanker.id].name}<br />
-                            score : {fontRanker.score}<br />
-                            {korFontInfo[fontRanker.id].tag}
+                            {korFontInfo[fontRanker.id].name}<br/>
                         </Col>
                 )}
             </Row>           
@@ -172,21 +170,17 @@ function Result() {
                             <FontResult fontRankerInfo={engFontInfo[fontRanker.id]}>
                                 {companyName}
                             </FontResult>
-                            {engFontInfo[fontRanker.id].name}<br />
-                            score : {fontRanker.score}<br />
-                            {engFontInfo[fontRanker.id].tag}
+                            {engFontInfo[fontRanker.id].name}<br/>
                         </Col>
                 )}
             </Row>
             }
-            <Row>Color</Row>
+            <Row className='h3'>Color</Row>
             <Row>
 
                 {colorScoreRankArray.map((colorRanker) => {
                     return (
                         <Col key={colorRanker.id}>
-                            name : {colorRanker.id}<br />
-                            score : {colorRanker.score}<br />
                             {colorInfo[colorRanker.id].hex.map((hexCode) => {
                                 return (<ColorResult colorCode={hexCode}>
                                     {hexCode}
@@ -198,21 +192,21 @@ function Result() {
                 })}
             </Row>
 
-            <Row>Image</Row>
+            <Row className='h3'>Image</Row>
             <Row>
                 {imageScoreRankArray.map((imageRanker, index) => {
                     return (
                         <Col key={index}>
                             <img width="100%" src={imageInfo[imageRanker.name].path} />
-                            score : {imageRanker.score}<br />
-                            {imageInfo[imageRanker.name].tag}
                         </Col>
                     )
                 })}
             </Row>
 
-            <Row>
+            <Row className='h3'>
                 keyword <br />
+                </Row>
+                <Row>
                 {Object.keys(result).map((keyword) => {
                     return <> {keyword}{result[keyword]} </>
                 })}
