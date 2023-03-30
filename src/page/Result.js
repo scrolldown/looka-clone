@@ -113,7 +113,7 @@ function Result() {
         resultArray.length = 3
         return resultArray;
     }
-
+    
     function getColorRank() {
         let resultArray = [];
 
