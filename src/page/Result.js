@@ -60,7 +60,7 @@ function Result() {
     
         // ChatGPT API 요청 보내기
         const apiUrl = 'https://api.openai.com/v1/chat/completions';
-        const apiKey = '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'; // ChatGPT API 키
+        const apiKey = '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'; // ChatGPT API 키
         const prompt = [{"role": "system", "content": "You are a competitive brand markerter."}
                         ,{"role": "user", "content": "새로 오픈하는 가게의 브랜드 아이덴티티를 아래의 단어를 기반으로 3가지 이상 만들어줘 '"
                         +highscoreKeywordArray.join(", ")
@@ -74,7 +74,8 @@ function Result() {
             }, {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
+              'Authorization': `Bearer ${apiKey}`,
+              'OpenAI-Organization' : "org-u6X1n1o0jTayhDOHAOo0Azwq"
             }
           });
         //   console.log(response.data.choices[0].message.content)
