@@ -8,6 +8,10 @@ import { useSelector, useDispatch } from "react-redux"
 import { imageInfo, keywordInfo, engFontInfo, korFontInfo, colorInfo } from '../const/Provider'
 import { changeName, changeSlogan } from "./../const/store.js"
 
+
+import axios from 'axios';
+
+
 const formStyle = {
     border: 0,
     fontFamily: "Montserrat",
@@ -44,6 +48,46 @@ function Result() {
     const [colorScoreRankArray, setColorScoreRankArray] = useState(getColorRank());
 
     const [companyName, setCompanyName] = useState(state.company.name);
+
+    // add chatgpt module
+    const [chatHistory, setChatHistory] = useState([]);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        
+        const scoreArray = [...new Set(Object.keys(result).map((k)=>result[k]))].sort(function(a, b){return b-a});
+        const highscoreKeywordArray = Object.keys(result).map(k => k).filter(keyword => scoreArray.slice(0,2).includes(result[keyword]))
+    
+        // ChatGPT API 요청 보내기
+        const apiUrl = 'https://api.openai.com/v1/chat/completions';
+        const apiKey = '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'; // ChatGPT API 키
+        const prompt = [{"role": "system", "content": "너를 경쟁력있는 브랜드 마케터라고 가정하고,"}
+                        ,{"role": "user", "content": "새로 오픈하는 가게의 브랜드 아이덴티티를 아래의 단어를 기반으로 3가지 이상 만들어줘 \n'"
+                        +highscoreKeywordArray.join(", ")
+                        +"'"}];
+
+        try {
+          const response = await axios.post(apiUrl, {
+            "model": "gpt-3.5-turbo",
+            "messages": prompt,
+            "temperature": 0.7
+            }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`
+            }
+          });
+        //   console.log(response.data.choices[0].message.content)
+          const chatResponse = response.data.choices[0].message.content;
+    
+          // ChatGPT API 응답 처리
+          setChatHistory([...chatHistory, { user: prompt[1]['content'], bot: chatResponse }]);
+        } catch (error) {
+          console.error('ChatGPT API 요청 실패:', error);
+        }
+      };
+
+
 
     function getKeywordScore() {
         let temp = {};
@@ -211,6 +255,17 @@ function Result() {
                     return <> {keyword}{result[keyword]} </>
                 })}
             </Row>
+            
+            <form onSubmit={handleSubmit}>
+                <button type="submit">chatGPT 추천 보기</button>
+            </form>
+            <div className="chat-history">
+                {chatHistory.map((chat, index) => (
+                <div key={index}>
+                    <p>Bot: {chat.bot}</p>
+                </div>
+                ))}
+            </div>
 
             <Button className='btn btn-default' onClick={()=>window.print()}>print</Button> 
 

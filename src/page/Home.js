@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { changeName, changeSlogan } from "./../const/store.js"
 
+
+
 const Content = styled.div`
     text-align: center;
     & .main-title{
@@ -26,12 +28,16 @@ const Content = styled.div`
     }
 `
 
+
+
+
 function Home() {
     const dispatch = useDispatch()
     const state = useSelector((state) => state)
 
     const [companyName, setCompanyName] = useState('')
     const [companySlogan, setCompanySlogan] = useState('')
+
 
     const onNameChange = (event) => {
         setCompanyName(event.target.value)
@@ -42,6 +48,7 @@ function Home() {
         setCompanySlogan(event.target.value)
         dispatch(changeSlogan(event.target.value))
     }
+
 
     return (
         <Content>
@@ -57,7 +64,6 @@ function Home() {
                 <Link to="/select-image">
                     <Button className='btn btn-default'>Get Started</Button>
                 </Link>
-
             </p>
         </Content>
     )
