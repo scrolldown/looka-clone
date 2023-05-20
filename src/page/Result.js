@@ -60,9 +60,9 @@ function Result() {
     
         // ChatGPT API 요청 보내기
         const apiUrl = 'https://api.openai.com/v1/chat/completions';
-        const apiKey = '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'; // ChatGPT API 키
-        const prompt = [{"role": "system", "content": "너를 경쟁력있는 브랜드 마케터라고 가정하고,"}
-                        ,{"role": "user", "content": "새로 오픈하는 가게의 브랜드 아이덴티티를 아래의 단어를 기반으로 3가지 이상 만들어줘 \n'"
+        const apiKey = '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'; // ChatGPT API 키
+        const prompt = [{"role": "system", "content": "You are a competitive brand markerter."}
+                        ,{"role": "user", "content": "새로 오픈하는 가게의 브랜드 아이덴티티를 아래의 단어를 기반으로 3가지 이상 만들어줘 '"
                         +highscoreKeywordArray.join(", ")
                         +"'"}];
 
@@ -262,7 +262,8 @@ function Result() {
             <div className="chat-history">
                 {chatHistory.map((chat, index) => (
                 <div key={index}>
-                    <p>Bot: {chat.bot}</p>
+                    <p>user: {chat.user}</p>
+                    <p>gpt: {chat.bot}</p>
                 </div>
                 ))}
             </div>
