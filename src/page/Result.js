@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import { imageInfo, keywordInfo, engFontInfo, korFontInfo, colorInfo } from '../const/Provider'
 import { changeName, changeSlogan } from "./../const/store.js"
-
+import LoadingSVG from "../const/Loading-Black.svg";
 
 import axios from 'axios';
 
@@ -41,6 +41,7 @@ function Result() {
 
     const koreanPattern =  /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const [isKorean, setIsKorean] = useState(koreanPattern.test(state.company.name));
+    const [isLoading, setIsLoading] = useState(false);
 
     const [imageScoreRankArray, setImageScoreRankArray] = useState(getImageRank());
     const [engFontScoreRankArray, setEngFontScoreRankArray] = useState(getEngFontRank());
@@ -54,13 +55,15 @@ function Result() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setIsLoading(true)
         
         const scoreArray = [...new Set(Object.keys(result).map((k)=>result[k]))].sort(function(a, b){return b-a});
         const highscoreKeywordArray = Object.keys(result).map(k => k).filter(keyword => scoreArray.slice(0,2).includes(result[keyword]))
     
         // ChatGPT API 요청 보내기
         const apiUrl = 'https://api.openai.com/v1/chat/completions';
-        const apiKey = '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'; // ChatGPT API 키
+        const apiKey = 'api'; // ChatGPT API 키
+        // 중요 ** APIKEY는 깃허브에 업로드 되면 안됨
         const prompt = [{"role": "system", "content": "You are a competitive brand markerter."}
                         ,{"role": "user", "content": "새로 오픈하는 가게의 브랜드 아이덴티티를 아래의 단어를 기반으로 3가지 이상 만들어줘 '"
                         +highscoreKeywordArray.join(", ")
@@ -83,6 +86,7 @@ function Result() {
     
           // ChatGPT API 응답 처리
           setChatHistory([...chatHistory, { user: prompt[1]['content'], bot: chatResponse }]);
+          setIsLoading(false);
         } catch (error) {
           console.error('ChatGPT API 요청 실패:', error);
         }
@@ -258,16 +262,25 @@ function Result() {
             </Row>
             
             <form onSubmit={handleSubmit}>
-                <button type="submit">chatGPT 추천 보기</button>
+                <Button className='btn btn-default' type="submit">chatGPT 추천 보기</Button>
             </form>
-            <div className="chat-history">
-                {chatHistory.map((chat, index) => (
-                <div key={index}>
-                    <p>user: {chat.user}</p>
-                    <p>gpt: {chat.bot}</p>
+            {isLoading ? (
+                <p align-items="center">
+                    <img src={LoadingSVG}/>
+                </p>
+            )
+            : < div className="chat-history">
+                    {chatHistory.map((chat, index) => (
+                    <div key={index}>
+                        <p>user: {chat.user}</p>
+                        <p>gpt: {chat.bot}</p>
+                    </div>
+                    ))}
                 </div>
-                ))}
-            </div>
+            }
+
+
+
 
             <Button className='btn btn-default' onClick={()=>window.print()}>print</Button> 
 
